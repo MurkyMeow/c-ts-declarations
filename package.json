@@ -1,0 +1,17 @@
+{
+  "name": "c-ts-declarations",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "elm-test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "elm-format": "^0.8.4",
+    "elm-test": "^0.19.1-revision6"
+  }
+}
