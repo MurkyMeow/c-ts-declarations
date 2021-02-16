@@ -39,10 +39,10 @@ suite =
             \_ ->
                 let
                     input =
-                        "struct mystruct;\nstring myfunc(int foo, string bar);"
+                        "struct mystruct;\nstring myfunc(int foo, char bar);"
 
                     expected =
-                        "export class mystruct {}\nexport function myfunc(foo: int, bar: string): string;"
+                        "export class mystruct {}\nexport function myfunc(foo: number, bar: string): string;"
                 in
                 case parseFile input of
                     Ok declarations ->
