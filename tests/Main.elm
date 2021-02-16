@@ -22,14 +22,14 @@ suite =
                     |> Expect.equal (parseFile "int foo();")
         , test "single function with a single argument" <|
             \_ ->
-                Ok [ Function { returnType = "int", name = "foo", arguments = [ { name = "bar", ctype = "char", sign = Nothing, len = Nothing } ] } ]
+                Ok [ Function { returnType = "int", name = "foo", arguments = [ { name = "bar", ctype = "char", sign = Nothing, len = Nothing, isPointer = False } ] } ]
                     |> Expect.equal (parseFile "int foo(char bar);")
         , test "single function with multiple arguments" <|
             \_ ->
                 let
                     arguments =
-                        [ { name = "bar", ctype = "char", sign = Nothing, len = Nothing }
-                        , { name = "baz", ctype = "bool", sign = Nothing, len = Nothing }
+                        [ { name = "bar", ctype = "char", sign = Nothing, len = Nothing, isPointer = False }
+                        , { name = "baz", ctype = "bool", sign = Nothing, len = Nothing, isPointer = False }
                         ]
                 in
                 Ok [ Function { returnType = "int", name = "foo", arguments = arguments } ]
@@ -45,10 +45,10 @@ suite =
             \_ ->
                 let
                     arguments =
-                        [ { name = "a", ctype = "int", sign = Just Unsigned, len = Nothing }
-                        , { name = "b", ctype = "int", sign = Just Signed, len = Nothing }
-                        , { name = "c", ctype = "int", sign = Nothing, len = Just Long }
-                        , { name = "d", ctype = "int", sign = Nothing, len = Just Short }
+                        [ { name = "a", ctype = "int", sign = Just Unsigned, len = Nothing, isPointer = False }
+                        , { name = "b", ctype = "int", sign = Just Signed, len = Nothing, isPointer = False }
+                        , { name = "c", ctype = "int", sign = Nothing, len = Just Long, isPointer = False }
+                        , { name = "d", ctype = "int", sign = Nothing, len = Just Short, isPointer = False }
                         ]
                 in
                 Ok [ Function { returnType = "int", name = "foo", arguments = arguments } ]
@@ -58,13 +58,24 @@ suite =
                 \_ ->
                     let
                         arguments =
-                            [ { name = "a", ctype = "long", sign = Nothing, len = Just Long }
-                            , { name = "b", ctype = "long", sign = Just Unsigned, len = Just Long }
-                            , { name = "c", ctype = "long", sign = Nothing, len = Nothing }
+                            [ { name = "a", ctype = "long", sign = Nothing, len = Just Long, isPointer = False }
+                            , { name = "b", ctype = "long", sign = Just Unsigned, len = Just Long, isPointer = False }
+                            , { name = "c", ctype = "long", sign = Nothing, len = Nothing, isPointer = False }
                             ]
                     in
                     Ok [ Function { returnType = "int", name = "foo", arguments = arguments } ]
                         |> Expect.equal (parseFile "int foo(long long a, unsigned long long b, long c);")
+        , test "pointer arguments" <|
+            \_ ->
+                let
+                    arguments =
+                        [ { name = "a", ctype = "int", sign = Nothing, len = Nothing, isPointer = True }
+                        , { name = "b", ctype = "int", sign = Nothing, len = Nothing, isPointer = True }
+                        , { name = "c", ctype = "int", sign = Just Unsigned, len = Nothing, isPointer = True }
+                        ]
+                in
+                Ok [ Function { returnType = "int", name = "foo", arguments = arguments } ]
+                    |> Expect.equal (parseFile "int foo(int * a, int * b, unsigned int* c);")
         , test "ts generator" <|
             \_ ->
                 let

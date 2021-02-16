@@ -18,6 +18,7 @@ type alias Argument =
     { sign : Maybe Sign
     , len : Maybe Len
     , ctype : String
+    , isPointer : Bool
     , name : String
     }
 
@@ -41,6 +42,14 @@ cvariable =
         , inner = \c -> Char.isAlphaNum c || c == '_'
         , reserved = Set.empty
         }
+
+
+pointer : Parser Bool
+pointer =
+    Parser.oneOf
+        [ Parser.map (\_ -> True) (Parser.symbol "*")
+        , Parser.succeed False
+        ]
 
 
 sign : Parser (Maybe Sign)
@@ -78,6 +87,8 @@ argument =
         |= len
         |. Parser.spaces
         |= cvariable
+        |. Parser.spaces
+        |= pointer
         |. Parser.spaces
         |= cvariable
 
