@@ -1,6 +1,6 @@
 {
   "name": "c-ts-declarations",
-  "version": "1.0.0-hotfix4",
+  "version": "1.0.0-hotfix6",
   "description": "",
   "main": "dist/bundle.js",
   "files": [

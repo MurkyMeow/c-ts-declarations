@@ -35,7 +35,7 @@ declarationToTS decl =
             "export class " ++ name ++ " {}"
 
         Function fun ->
-            "export function " ++ fun.name ++ "(" ++ argumentsToTS fun.arguments ++ "): " ++ fun.returnType.name ++ ";"
+            "export function " ++ fun.name ++ "(" ++ argumentsToTS fun.arguments ++ "): " ++ ctypeToTS fun.returnType ++ ";"
 
 
 generateTS : List Declaration -> String

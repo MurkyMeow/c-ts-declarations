@@ -93,15 +93,10 @@ suite =
             \_ ->
                 let
                     input =
-                        "struct mystruct;\nstring myfunc(int foo, char bar);"
+                        "struct mystruct;\ndouble myfunc(int foo, char bar);"
 
                     expected =
-                        "export class mystruct {}\nexport function myfunc(foo: number, bar: string): string;"
+                        "export class mystruct {}\nexport function myfunc(foo: number, bar: string): number;"
                 in
-                case parseFile input of
-                    Ok declarations ->
-                        Expect.equal expected (generateTS declarations)
-
-                    Err _ ->
-                        Expect.fail ""
+                Expect.equal (Ok expected) (parseFile input |> Result.map generateTS)
         ]
