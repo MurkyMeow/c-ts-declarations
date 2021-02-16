@@ -1,11 +1,11 @@
 module TSGenerator exposing (generateTS)
 
-import CParser exposing (Argument, Declaration(..))
+import CParser exposing (Argument, CType, Declaration(..))
 
 
-ctypeToTS : String -> String
+ctypeToTS : CType -> String
 ctypeToTS ctype =
-    case ctype of
+    case ctype.name of
         "char" ->
             "string"
 
@@ -19,7 +19,7 @@ ctypeToTS ctype =
             "number"
 
         _ ->
-            ctype
+            ctype.name
 
 
 argumentsToTS : List Argument -> String
@@ -35,7 +35,7 @@ declarationToTS decl =
             "export class " ++ name ++ " {}"
 
         Function fun ->
-            "export function " ++ fun.name ++ "(" ++ argumentsToTS fun.arguments ++ "): " ++ fun.returnType ++ ";"
+            "export function " ++ fun.name ++ "(" ++ argumentsToTS fun.arguments ++ "): " ++ fun.returnType.name ++ ";"
 
 
 generateTS : List Declaration -> String

@@ -1,4 +1,4 @@
-module CParser exposing (Argument, Declaration(..), Len(..), Sign(..), parseFile)
+module CParser exposing (Argument, CType, Declaration(..), Len(..), Sign(..), parseFile)
 
 import Parser exposing ((|.), (|=), Parser, Step(..), Trailing(..))
 import Set
@@ -14,17 +14,22 @@ type Len
     | Long
 
 
-type alias Argument =
+type alias CType =
     { sign : Maybe Sign
     , len : Maybe Len
-    , ctype : String
+    , name : String
     , isPointer : Bool
+    }
+
+
+type alias Argument =
+    { ctype : CType
     , name : String
     }
 
 
 type alias FunctionParams =
-    { returnType : String
+    { returnType : CType
     , name : String
     , arguments : List Argument
     }
@@ -42,6 +47,18 @@ cvariable =
         , inner = \c -> Char.isAlphaNum c || c == '_'
         , reserved = Set.empty
         }
+
+
+ctype : Parser CType
+ctype =
+    Parser.succeed CType
+        |= sign
+        |. Parser.spaces
+        |= len
+        |. Parser.spaces
+        |= cvariable
+        |. Parser.spaces
+        |= pointer
 
 
 pointer : Parser Bool
@@ -82,13 +99,7 @@ struct =
 argument : Parser Argument
 argument =
     Parser.succeed Argument
-        |= sign
-        |. Parser.spaces
-        |= len
-        |. Parser.spaces
-        |= cvariable
-        |. Parser.spaces
-        |= pointer
+        |= ctype
         |. Parser.spaces
         |= cvariable
 
@@ -109,7 +120,7 @@ function : Parser Declaration
 function =
     Parser.succeed Function
         |= (Parser.succeed FunctionParams
-                |= cvariable
+                |= ctype
                 |. Parser.spaces
                 |= cvariable
                 |. Parser.spaces
