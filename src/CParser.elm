@@ -1,4 +1,4 @@
-module CParser exposing (Argument, Declaration(..), file)
+module CParser exposing (Argument, Declaration(..), parseFile)
 
 import Parser exposing ((|.), (|=), Parser, Step(..), Trailing(..))
 import Set
@@ -92,3 +92,8 @@ file =
                 , Parser.succeed ()
                     |> Parser.map (\_ -> Done (List.reverse revDeclarations))
                 ]
+
+
+parseFile : String -> Result (List Parser.DeadEnd) (List Declaration)
+parseFile str =
+    Parser.run file str

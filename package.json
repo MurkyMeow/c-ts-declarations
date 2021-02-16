@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "elm-test"
+    "test": "elm-test",
+    "build": "NODE_ENV=production webpack",
+    "start": "node dist/bundle.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +14,9 @@
   "dependencies": {},
   "devDependencies": {
     "elm-format": "^0.8.4",
-    "elm-test": "^0.19.1-revision6"
+    "elm-test": "^0.19.1-revision6",
+    "elm-webpack-loader": "^7.0.1",
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0"
   }
 }
