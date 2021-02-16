@@ -1,11 +1,23 @@
-module CParser exposing (Argument, Declaration(..), parseFile)
+module CParser exposing (Argument, Declaration(..), Len(..), Sign(..), parseFile)
 
 import Parser exposing ((|.), (|=), Parser, Step(..), Trailing(..))
 import Set
 
 
+type Sign
+    = Signed
+    | Unsigned
+
+
+type Len
+    = Short
+    | Long
+
+
 type alias Argument =
-    { ctype : String
+    { sign : Maybe Sign
+    , len : Maybe Len
+    , ctype : String
     , name : String
     }
 
@@ -31,6 +43,24 @@ cvariable =
         }
 
 
+sign : Parser (Maybe Sign)
+sign =
+    Parser.oneOf
+        [ Parser.map (\_ -> Just Signed) (Parser.keyword "signed")
+        , Parser.map (\_ -> Just Unsigned) (Parser.keyword "unsigned")
+        , Parser.succeed Nothing
+        ]
+
+
+len : Parser (Maybe Len)
+len =
+    Parser.oneOf
+        [ Parser.map (\_ -> Just Long) (Parser.keyword "long")
+        , Parser.map (\_ -> Just Short) (Parser.keyword "short")
+        , Parser.succeed Nothing
+        ]
+
+
 struct : Parser Declaration
 struct =
     Parser.succeed Struct
@@ -43,6 +73,10 @@ struct =
 argument : Parser Argument
 argument =
     Parser.succeed Argument
+        |= sign
+        |. Parser.spaces
+        |= len
+        |. Parser.spaces
         |= cvariable
         |. Parser.spaces
         |= cvariable
