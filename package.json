@@ -1,15 +1,22 @@
 {
   "name": "c-ts-declarations",
-  "version": "1.0.0",
+  "version": "1.0.0-hotfix1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/bundle.js",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MurkyMeow/c-ts-declarations.git"
+  },
   "scripts": {
     "test": "elm-test",
     "build": "NODE_ENV=production webpack",
     "start": "node dist/bundle.js",
     "sample": "node dist/bundle.js -i sample/foo.h -i sample/bar.h -o sample/output.d.ts"
   },
-  "keywords": [],
+  "keywords": ["c", "header", "generator", "typegen", "elm", "typescript"],
   "author": "",
   "license": "ISC",
   "dependencies": {
