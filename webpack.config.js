@@ -1,8 +1,11 @@
 const path = require('path')
+const nodeExternals = require('webpack-node-externals')
 
 module.exports = {
-  entry: './lib/index.js',
+  entry: './lib/cli.js',
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  target: 'node',
+  externals: [nodeExternals()],
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
