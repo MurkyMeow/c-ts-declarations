@@ -1,3 +1,4 @@
+const { BannerPlugin } = require('webpack')
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 
@@ -6,10 +7,13 @@ module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   target: 'node',
   externals: [nodeExternals()],
+  plugins: [
+    new BannerPlugin({ banner: '#!/usr/bin/env node', raw: true, entryOnly: true })
+  ],
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   module: {
     rules: [

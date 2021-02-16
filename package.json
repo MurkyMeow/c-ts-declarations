@@ -1,11 +1,14 @@
 {
   "name": "c-ts-declarations",
-  "version": "1.0.0-hotfix1",
+  "version": "1.0.0-hotfix4",
   "description": "",
   "main": "dist/bundle.js",
   "files": [
     "dist"
   ],
+  "bin": {
+    "c-ts-declarations": "dist/bundle.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MurkyMeow/c-ts-declarations.git"
